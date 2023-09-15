@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
-import com.pojo.Admin;
-import com.service.AdminServiceImpl;
-import com.service.IAdminServcie;
+import com.pojo.User;
+import com.service.UserServiceImpl;
+import com.service.IUserService;
 import com.vo.ResultVO;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet{
 	
-	IAdminServcie adminService = new AdminServiceImpl();
+	IUserService userService = new UserServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,16 +28,17 @@ public class LoginServlet extends HttpServlet{
 		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
+		String role = req.getParameter("role");
 		
-		Admin a = adminService.login(username, password);
+		User ur = userService.login(username, password,role);
 		
 		PrintWriter pw = resp.getWriter();
-		if(a!=null) 
+		if(ur!=null) 
 		{
-			pw.print(JSON.toJSONString(ResultVO.success(a)));
+			pw.print(JSON.toJSONString(ResultVO.success(ur)));
 		}
 		else
-		{
+		{	
 			pw.print(JSON.toJSONString(ResultVO.fail(1, "µÇÂ½Ê§°Ü")));
 		}
 	}
